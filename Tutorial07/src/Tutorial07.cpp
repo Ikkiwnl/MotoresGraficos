@@ -676,15 +676,15 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case '1':
             g_vMeshColor = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
             break;
-
+            //Cambio a color rosa
         case '2':
             g_vMeshColor = XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f);
             break;
-
+            //Cambio a color amarillo
         case '3':
             g_vMeshColor = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
             break;
-
+            //cambio color cyan
         case '4':
             g_vMeshColor = XMFLOAT4(0.0f, 1.0f, 1.0f, 0.5f);
             break;
