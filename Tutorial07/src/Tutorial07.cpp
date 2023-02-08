@@ -4,13 +4,16 @@
 // This application demonstrates texturing
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
-//--------------------------------------------------------------------------------------
+//----------------
 #include <windows.h>
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dcompiler.h>
 #include <xnamath.h>
 #include "Resource.h"
+#include "CTime.h"
+#include <iostream>
+#include <vector>
 #define WINDOWS
 
 
@@ -45,7 +48,12 @@ struct CBChangesEveryFrame
     XMMATRIX mWorld;
     XMFLOAT4 vMeshColor;
 };
-
+struct Vector3
+{
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+};
 
 //--------------------------------------------------------------------------------------
 // Global Variables
@@ -75,35 +83,34 @@ XMMATRIX                            g_World;
 XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor( 0.7f, 0.7f, 0.7f, 1.0f );
-
+Camera cam;
+float movementSpeed = 5.0f;
+static float t = 0.0f;
+CTime g_time;
+Vector3 Position;
+float speed;
 
 //--------------------------------------------------------------------------------------
 // Forward declarations
 //--------------------------------------------------------------------------------------
 HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow );
 HRESULT InitDevice();
-void CleanupDevice();
 LRESULT CALLBACK    WndProc( HWND, UINT, WPARAM, LPARAM );
 void Render();
+void update(float deltaTime);
+//Funcion encargada de liberar los recursos utilizados en el programa
+void destroy();
 
-//Encargado de las inicializaciones de todos los datos que se encunetran en el proyecto
 void init()
 {
+
 }
 
-//Encargada de actualizar la logica del programa
-void update()
-{
-}
 
-//Encargada de actualizar exclusivamente los datos que se presenten en pantalla
-void render()
-{
-}
 
-//Funcion encargada de liberar los recursos utilizados en el programa
-void destroy()
+void render() 
 {
+
 }
 
 
@@ -121,9 +128,12 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
     if( FAILED( InitDevice() ) )
     {
-        CleanupDevice();
+        destroy();
         return 0;
     }
+
+    //inicializamos el tiempo
+    g_time.init();
 
     // Main message loop
     MSG msg = {0};
@@ -136,11 +146,13 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
         }
         else
         {
+            g_time.update();
+            update(g_time.m_deltaTime);
             Render();
         }
     }
 
-    CleanupDevice();
+    destroy();
 
     return ( int )msg.wParam;
 }
@@ -170,7 +182,7 @@ HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow )
 
     // Create window
     g_hInst = hInstance;
-    RECT rc = { 0, 0, 1920, 1080 };
+    RECT rc = { 0, 0, 980, 720 };
     AdjustWindowRect( &rc, WS_OVERLAPPEDWINDOW, FALSE );
     g_hWnd = CreateWindow( "TutorialWindowClass", "Direct3D 11 Tutorial 7", WS_OVERLAPPEDWINDOW,
                            CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
@@ -300,8 +312,11 @@ HRESULT InitDevice()
     descDepth.CPUAccessFlags = 0;
     descDepth.MiscFlags = 0;
     hr = g_pd3dDevice->CreateTexture2D( &descDepth, nullptr, &g_pDepthStencil );
-    if( FAILED( hr ) )
+    if (FAILED(hr))
+    {
+        /*std::cout << "Error in the depeth stencil creation" << std::endl;*/
         return hr;
+    }
 
     // Create the depth stencil view
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
@@ -343,16 +358,39 @@ HRESULT InitDevice()
         return hr;
     }
 
-    // Define the input layout
-    D3D11_INPUT_ELEMENT_DESC layout[] =
-    {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    };
-    UINT numElements = ARRAYSIZE( layout );
+   /*  Define the input layout*/
+    //D3D11_INPUT_ELEMENT_DESC layout[] =
+    //{
+    //    { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    //    { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    //};
+    //UINT numElements = ARRAYSIZE( layout );
+    
+    std:: vector <D3D11_INPUT_ELEMENT_DESC> Layout;
+
+    D3D11_INPUT_ELEMENT_DESC position;
+    position.SemanticName = "POSITION";
+    position.SemanticIndex = 0;
+    position.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+    position.InputSlot = 0;
+    position.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+    position.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    position.InstanceDataStepRate = 0;
+    Layout.push_back(position);
+
+    D3D11_INPUT_ELEMENT_DESC texcoord;
+    texcoord.SemanticName = "TEXCOORD";
+    texcoord.SemanticIndex = 0;
+    texcoord.Format = DXGI_FORMAT_R32G32_FLOAT;
+    texcoord.InputSlot = 0;
+    texcoord.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+    texcoord.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    texcoord.InstanceDataStepRate = 0;
+    Layout.push_back(texcoord);
+
 
     // Create the input layout
-    hr = g_pd3dDevice->CreateInputLayout( layout, numElements, pVSBlob->GetBufferPointer(),
+    hr = g_pd3dDevice->CreateInputLayout(Layout.data() , Layout.size(), pVSBlob->GetBufferPointer(),
                                           pVSBlob->GetBufferSize(), &g_pVertexLayout );
     pVSBlob->Release();
     if( FAILED( hr ) )
@@ -517,8 +555,6 @@ HRESULT InitDevice()
     XMVECTOR Up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
     g_View = XMMatrixLookAtLH( Eye, At, Up );
 
-    Camera cam;
-
     //CBNeverChanges cbNeverChanges;
    /* cbNeverChanges.mView = XMMatrixTranspose( g_View );
     g_pImmediateContext->UpdateSubresource( g_pCBNeverChanges, 0, nullptr, &cbNeverChanges, 0, 0 );*/
@@ -531,15 +567,47 @@ HRESULT InitDevice()
     g_pImmediateContext->UpdateSubresource( g_pCBChangeOnResize, 0, nullptr, &cbChangesOnResize, 0, 0 );*/
     cam.mView = XMMatrixTranspose(g_View);
     cam.mProjection = XMMatrixTranspose(g_Projection);
-    g_pImmediateContext->UpdateSubresource(g_Camera, 0, nullptr, &cam, 0, 0);
+    //Position.x = 0.0;
+    //Position.y = 0.0;
+    //Position.z = 0.0;
+   /* g_pImmediateContext->UpdateSubresource(g_Camera, 0, nullptr, &cam, 0, 0);*/
     return S_OK;
+}
+
+void Input(float deltaTime)
+{
+
+}
+
+//Encargada de actualizar la logica del programa
+void update(float deltaTime)
+{
+    Input(deltaTime);
+    // /*Update our time*/
+    speed += 0.0002f;
+
+    //// Modify the color
+    //g_vMeshColor.x = (sinf(t * 1.0f) + 1.0f) * 0.5f;
+    //g_vMeshColor.y = (cosf(t * 3.0f) + 1.0f) * 0.5f;
+    //g_vMeshColor.z = (sinf(t * 5.0f) + 1.0f) * 0.5f;
+
+
+    // Rotate cube around the origin
+    g_World = XMMatrixScaling(1, 1, 1) * XMMatrixRotationY(speed) * XMMatrixTranslation(Position.x, Position.y, Position.z);
+    CBChangesEveryFrame cb;
+    cb.mWorld = XMMatrixTranspose(g_World);
+    cb.vMeshColor = g_vMeshColor;
+
+    g_pImmediateContext->UpdateSubresource(g_pCBChangesEveryFrame, 0, nullptr, &cb, 0, 0);
+
+    g_pImmediateContext->UpdateSubresource(g_Camera, 0, nullptr, &cam, 0, 0);
 }
 
 
 //--------------------------------------------------------------------------------------
 // Clean up the objects we've created
 //--------------------------------------------------------------------------------------
-void CleanupDevice()
+void destroy()
 {
     if( g_pImmediateContext ) g_pImmediateContext->ClearState();
 
@@ -573,17 +641,19 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
     switch( message )
     {
-        case WM_PAINT:
-            hdc = BeginPaint( hWnd, &ps );
-            EndPaint( hWnd, &ps );
-            break;
+    case 'W':
 
-        case WM_DESTROY:
-            PostQuitMessage( 0 );
-            break;
+    case WM_PAINT:
+       hdc = BeginPaint( hWnd, &ps );
+       EndPaint( hWnd, &ps );
+       break;
 
-        default:
-            return DefWindowProc( hWnd, message, wParam, lParam );
+    case WM_DESTROY:
+       PostQuitMessage( 0 );
+       break;
+
+    default:
+       return DefWindowProc( hWnd, message, wParam, lParam );
     }
 
     return 0;
@@ -595,30 +665,6 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 //--------------------------------------------------------------------------------------
 void Render()
 {
-    // Update our time
-    static float t = 0.0f;
-    if( g_driverType == D3D_DRIVER_TYPE_REFERENCE )
-    {
-        t += ( float )XM_PI * 0.0125f;
-    }
-    else
-    {
-        static DWORD dwTimeStart = 0;
-        DWORD dwTimeCur = GetTickCount();
-        if( dwTimeStart == 0 )
-            dwTimeStart = dwTimeCur;
-        t = ( dwTimeCur - dwTimeStart ) / 1000.0f;
-    }
-
-    // Rotate cube around the origin
-    g_World = XMMatrixRotationY( t );
-
-    // Modify the color
-    g_vMeshColor.x = ( sinf( t * 1.0f ) + 1.0f ) * 0.5f;
-    g_vMeshColor.y = ( cosf( t * 3.0f ) + 1.0f ) * 0.5f;
-    g_vMeshColor.z = ( sinf( t * 5.0f ) + 1.0f ) * 0.5f;
-
-    //
     // Clear the back buffer
     //
     float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; // red, green, blue, alpha
@@ -629,20 +675,11 @@ void Render()
     //
     g_pImmediateContext->ClearDepthStencilView( g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0 );
 
-    //
-    // Update variables that change once per frame
-    //
-    CBChangesEveryFrame cb;
-    cb.mWorld = XMMatrixTranspose( g_World );
-    cb.vMeshColor = g_vMeshColor;
-    g_pImmediateContext->UpdateSubresource( g_pCBChangesEveryFrame, 0, nullptr, &cb, 0, 0 );
 
     //
     // Render the cube
     //
     g_pImmediateContext->VSSetShader( g_pVertexShader, nullptr, 0 );
-    /*g_pImmediateContext->VSSetConstantBuffers( 0, 1, &g_pCBNeverChanges );
-    g_pImmediateContext->VSSetConstantBuffers( 1, 1, &g_pCBChangeOnResize );*/
     g_pImmediateContext->VSSetConstantBuffers( 0, 1, &g_Camera );
     g_pImmediateContext->VSSetConstantBuffers( 1, 1, &g_pCBChangesEveryFrame );
     g_pImmediateContext->PSSetShader( g_pPixelShader, nullptr, 0 );

@@ -222,6 +222,10 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <FxCompile />
+    <FxCompile>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -307,6 +311,10 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <FxCompile />
+    <FxCompile>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
     <ClCompile>
@@ -392,9 +400,14 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <FxCompile />
+    <FxCompile>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\Resource.h" />
+    <ClInclude Include="Include\CTime.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorial07.fx" />
@@ -403,12 +416,16 @@
     <ResourceCompile Include="Tutorial07.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CTime.cpp" />
     <ClCompile Include="src\Tutorial07.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Tutorial07.fx">
       <FileType>Document</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bin\seafloor.dds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
