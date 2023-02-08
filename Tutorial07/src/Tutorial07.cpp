@@ -84,7 +84,7 @@ XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor( 0.7f, 0.7f, 0.7f, 1.0f );
 Camera cam;
-float movementSpeed = 5.0f;
+float movementSpeed = 150.0f;
 static float t = 0.0f;
 CTime g_time;
 Vector3 Position;
@@ -584,12 +584,12 @@ void update(float deltaTime)
 {
     Input(deltaTime);
     // /*Update our time*/
-    speed += 0.0002f;
+    speed += 0.0002f;//nos ayuda a elegir la fuerza de rotacion de nuestro cubo
 
-    //// Modify the color
-    //g_vMeshColor.x = (sinf(t * 1.0f) + 1.0f) * 0.5f;
-    //g_vMeshColor.y = (cosf(t * 3.0f) + 1.0f) * 0.5f;
-    //g_vMeshColor.z = (sinf(t * 5.0f) + 1.0f) * 0.5f;
+    //// Modo rainbow
+    //g_vMeshColor.x = (sinf(deltaTime * 1.0f) + 1.0f) * 0.5f;
+    //g_vMeshColor.y = (cosf(deltaTime * 3.0f) + 1.0f) * 0.5f;
+    //g_vMeshColor.z = (sinf(deltaTime * 5.0f) + 1.0f) * 0.5f;
 
 
     // Rotate cube around the origin
@@ -634,15 +634,13 @@ void destroy()
 //--------------------------------------------------------------------------------------
 // Called every time the application receives a message
 //--------------------------------------------------------------------------------------
-LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
+LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT ps;
     HDC hdc;
 
     switch( message )
     {
-    case 'W':
-
     case WM_PAINT:
        hdc = BeginPaint( hWnd, &ps );
        EndPaint( hWnd, &ps );
@@ -651,6 +649,47 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
     case WM_DESTROY:
        PostQuitMessage( 0 );
        break;
+
+    case WM_KEYDOWN:
+        //Usamos WM_KEYDOWN para poder hacer uso de las teclas para el movimiento del cubo
+        switch (wParam)
+        {
+            //Primero ponemos sobre que eje nos va a hacer movernos el presionar
+            //la tecla despues despues lo sumamos con el movementspeed y multiplicamos con 
+            //nuestro deltatime que es nuestro tiemporeal
+        case 'W':
+            Position.y += movementSpeed * g_time.m_deltaTime;
+            break;
+            //Hacemos lo mismo que en el caso anterrior solo en lugar de ir en una coordenada positiva elegimos una negativa
+        case 'S':
+            Position.y -= movementSpeed * g_time.m_deltaTime;
+            break;
+            //Hacemos lo mismo que en el caso anterrior solo en lugar de ir en una coordenada positiva elegimos una negativa
+        case 'A':
+            Position.x -= movementSpeed * g_time.m_deltaTime;
+            break;
+            //Cambiamos de eje para el movimiento ahora sobre x 
+        case 'D':
+            Position.x += movementSpeed * g_time.m_deltaTime;
+            break;
+            //Elegimos la tecla que nos hara el cambio de color y con ayuda el el XMFLOAT4 que es el que define el color de nuestro cubo junto con g_vMeshColor cambiamos los valores del RGBW
+        case '1':
+            g_vMeshColor = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+            break;
+
+        case '2':
+            g_vMeshColor = XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f);
+            break;
+
+        case '3':
+            g_vMeshColor = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+            break;
+
+        case '4':
+            g_vMeshColor = XMFLOAT4(0.0f, 1.0f, 1.0f, 0.5f);
+            break;
+        }
+        break;
 
     default:
        return DefWindowProc( hWnd, message, wParam, lParam );
