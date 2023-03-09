@@ -16,6 +16,14 @@
   <ItemGroup>
     <ClInclude Include="Include\Resource.h" />
     <ClInclude Include="Include\CTime.h" />
+    <ClInclude Include="Include\Prerequisites.h" />
+    <ClInclude Include="Include\Commons.h" />
+    <ClInclude Include="Include\DepthStencilView.h" />
+    <ClInclude Include="Include\Window.h" />
+    <ClInclude Include="Include\DeviceContext.h" />
+    <ClInclude Include="Include\Device.h" />
+    <ClInclude Include="Include\Texture.h" />
+    <ClInclude Include="Include\InputLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorial07.fx">
@@ -33,6 +41,12 @@
   <ItemGroup>
     <ClCompile Include="src\Tutorial07.cpp" />
     <ClCompile Include="src\CTime.cpp" />
+    <ClCompile Include="src\DepthStencilView.cpp" />
+    <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\DeviceContext.cpp" />
+    <ClCompile Include="src\Device.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\InputLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bin\seafloor.dds" />
