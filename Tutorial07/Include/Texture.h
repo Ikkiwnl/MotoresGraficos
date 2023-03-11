@@ -11,7 +11,7 @@ class
 {
 public:
 	Texture() = default;
-	~Texture();
+	~Texture() {};
 
 	void
 		init(Device device, std::string textureName);
@@ -41,5 +41,3 @@ public:
 	ID3D11ShaderResourceView* m_textureFromImg = nullptr;
 
 };
-
-

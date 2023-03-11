@@ -118,6 +118,8 @@ C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xnamathvector.i
 C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xnamathmisc.inl(518,43): warning C4838: la conversión de 'unsigned int' en 'INT' requiere una conversión de restricción (compilando archivo de origen src\Tutorial07.cpp)
 C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xnamathmisc.inl(519,40): warning C4838: la conversión de 'unsigned int' en 'INT' requiere una conversión de restricción (compilando archivo de origen src\Tutorial07.cpp)
 C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xnamathmisc.inl(519,51): warning C4838: la conversión de 'unsigned int' en 'INT' requiere una conversión de restricción (compilando archivo de origen src\Tutorial07.cpp)
-C:\Users\erick\OneDrive\Documentos\GitHub\MotoresGraficos\Tutorial07\src\Tutorial07.cpp(394,86): warning C4267: 'argumento': conversión de 'size_t' a 'UINT'; posible pérdida de datos
-C:\Users\erick\OneDrive\Documentos\GitHub\MotoresGraficos\Tutorial07\src\Tutorial07.cpp(577,18): warning C4100: 'deltaTime': parámetro formal sin referencia
+C:\Users\erick\OneDrive\Documentos\GitHub\MotoresGraficos\Tutorial07\src\Tutorial07.cpp(332,90): warning C4244: 'argumento': conversión de 'SIZE_T' a 'unsigned int'; posible pérdida de datos
+C:\Users\erick\OneDrive\Documentos\GitHub\MotoresGraficos\Tutorial07\src\Tutorial07.cpp(396,89): warning C4244: 'argumento': conversión de 'SIZE_T' a 'unsigned int'; posible pérdida de datos
+C:\Users\erick\OneDrive\Documentos\GitHub\MotoresGraficos\Tutorial07\src\Tutorial07.cpp(352,18): warning C4189: 'numElements': la variable local se ha inicializado pero no se hace referencia a ella
+C:\Users\erick\OneDrive\Documentos\GitHub\MotoresGraficos\Tutorial07\src\Tutorial07.cpp(544,18): warning C4100: 'deltaTime': parámetro formal sin referencia
   Tutorial07_2010.vcxproj -> C:\Users\erick\OneDrive\Documentos\GitHub\MotoresGraficos\Tutorial07\bin\x64\Tutorial07_d.exe
