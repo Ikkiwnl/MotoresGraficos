@@ -28,3 +28,4 @@ public:
 	ID3D11RenderTargetView* m_renderTargetView = nullptr;
 
 };
+//Erick Aaron :D

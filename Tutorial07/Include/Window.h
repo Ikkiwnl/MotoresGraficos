@@ -20,7 +20,7 @@ public:
 	void
 		destroy();
 
-
+	//Erick Aaron :D
 public:
 	HWND m_hWnd = nullptr;
 	HINSTANCE m_hInst = nullptr;
@@ -29,3 +29,4 @@ public:
 	unsigned int m_height;
 	LPCSTR m_windowName = "None";
 };
+//Erick Aaron :D

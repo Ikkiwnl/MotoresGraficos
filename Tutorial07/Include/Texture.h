@@ -22,7 +22,7 @@ public:
 			unsigned int height,
 			DXGI_FORMAT Format,
 			unsigned int BindFlags);
-
+	//Erick Aaron :D
 	void
 		update();
 
@@ -32,7 +32,7 @@ public:
 	void
 		destroy();
 
-
+	//Erick Aaron :D
 public:
 	//This variable is in charge if handle a texture resource as data
 	ID3D11Texture2D* m_texture = nullptr;

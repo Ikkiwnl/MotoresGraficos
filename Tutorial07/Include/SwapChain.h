@@ -22,10 +22,10 @@ public:
 			DeviceContext& deviceContext,
 			Texture& backBuffer,
 			Window window);
-
+	//Erick Aaron :D
 	void
 		update();
-
+	//Erick Aaron :D
 	void
 		render();
 

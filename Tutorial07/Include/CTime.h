@@ -27,5 +27,6 @@ private:
 	LARGE_INTEGER m_lastTime;
 	LARGE_INTEGER m_timerFrequency;
 	
-};
+};//Erick Aaron :D
 
+//Erick Aaron :D
