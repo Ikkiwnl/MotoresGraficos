@@ -3,6 +3,8 @@
 //
 // This application demonstrates texturing
 //
+// Erick Aaron Hernandez Ibarra
+// 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //----------------
 
@@ -40,18 +42,13 @@ Viewport                            g_viewport;
 
 D3D_DRIVER_TYPE                     g_driverType = D3D_DRIVER_TYPE_NULL;
 D3D_FEATURE_LEVEL                   g_featureLevel = D3D_FEATURE_LEVEL_11_0;
-//ID3D11Device*                       g_pd3dDevice = nullptr;
-//ID3D11DeviceContext*                g_pImmediateContext = nullptr;
-//IDXGISwapChain*                     g_pSwapChain = nullptr;
-//ID3D11RenderTargetView*             g_pRenderTargetView = nullptr;
-//ID3D11Texture2D*                    g_pDepthStencil = nullptr;
-//ID3D11DepthStencilView*             g_pDepthStencilView = nullptr;
 ID3D11VertexShader*                 g_pVertexShader = nullptr;
 ID3D11PixelShader*                  g_pPixelShader = nullptr;
 ID3D11Buffer*                       g_pVertexBuffer = nullptr;
 ID3D11Buffer*                       g_pIndexBuffer = nullptr;
 ID3D11Buffer*                       g_Camera = nullptr;
-ID3D11Buffer*                       g_pCBChangesEveryFrame = nullptr;ID3D11ShaderResourceView*           g_pTextureRV = nullptr;
+ID3D11Buffer*                       g_pCBChangesEveryFrame = nullptr;
+
 XMMATRIX                            g_World;
 XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
@@ -77,12 +74,6 @@ void Render();
 void update(float deltaTime);
 //Funcion encargada de liberar los recursos utilizados en el programa
 void destroy();
-
-//Inicializa datos de el proyecto
-void init()
-{
-
-}
 
 
 //Erick Aaron :D
@@ -128,7 +119,6 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
     return ( int )msg.wParam;
 }
-//Erick Aaron :D
 
 
 
@@ -141,10 +131,10 @@ HRESULT CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szS
 
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined( DEBUG ) || defined( _DEBUG )
-    // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
-    // the release configuration of this program.
+    // Establecemos el indicador D3DCOMPILE_DEBUG para meter información de depuración en los shaders.
+    // Establecemos esta bandera mejora la experiencia de depuración de shaders, pero todavía lo permite
+    // los sombreadores se optimizarán y se ejecutarán exactamente de la forma en que se ejecutarán en la configuración de lanzamiento de este programa.
+
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 #endif
 
@@ -162,7 +152,7 @@ HRESULT CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szS
 
     return S_OK;
 }
-//Erick Aaron :D
+// 
 
 //--------------------------------------------------------------------------------------
 // Create Direct3D device and swap chain
@@ -171,10 +161,10 @@ HRESULT InitDevice()
 {
     HRESULT hr = S_OK;
 
+    //Creamos el swapchchain
     g_swapChain.init(g_device, g_deviceContext, g_backBuffer, g_window);
 
-
-
+    //Creamos el rendertarget view
     g_renderTargetView.init(g_device, g_backBuffer, DXGI_FORMAT_R8G8B8A8_UNORM);
 
     g_backBuffer.destroy();
@@ -187,19 +177,14 @@ HRESULT InitDevice()
                         DXGI_FORMAT_D24_UNORM_S8_UINT,
                         D3D11_BIND_DEPTH_STENCIL);
 
-    //hr = g_pd3dDevice->CreateTexture2D( &descDepth, nullptr, &g_pDepthStencil );
-    //if (FAILED(hr))
-    //{
-    //    /*std::cout << "Error in the depeth stencil creation" << std::endl;*/
-    //    return hr;
-    //}
-
-    // Create the depth stencil view
+    // Creamos el depth stencil view
     g_depthStencilView.init(g_device, g_depthStencil.m_texture, DXGI_FORMAT_D24_UNORM_S8_UINT);
+
+    //Iniciamos el viewport
     g_viewport.init(g_window);
 
 
-    // Compile the vertex shader
+    // Compilamos el vertex shader
     ID3DBlob* pVSBlob = nullptr;
     hr = CompileShaderFromFile( "Tutorial07.fx", "VS", "vs_4_0", &pVSBlob );
     if( FAILED( hr ) )
@@ -208,8 +193,8 @@ HRESULT InitDevice()
                     "The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", "Error", MB_OK );
         return hr;
     }
-    //Erick Aaron :D
-    // Create the vertex shader
+    // 
+    // Creamos el vertex shader
     hr = g_device.CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader );
     if( FAILED( hr ) )
     {    
@@ -220,19 +205,19 @@ HRESULT InitDevice()
     //Define InputLayout
     D3D11_INPUT_ELEMENT_DESC layout[] =
     {
-        { "POSITION",                   //Semantic Name  -> Identificador para la estructura en el shader
-            0,                              //Semantic Index -> En caso de tener mas de un Semantic Name igual
-            DXGI_FORMAT_R32G32B32_FLOAT,    //Format         -> Clasificador para el tipo de datos
-            0,                              //Input Slot     -> Revisa si existe mas de un vertex buffer (Esto es importante a considerar cuadno existan mas modelos)
-            D3D11_APPEND_ALIGNED_ELEMENT,   //AlignedByOffset  -> Administra el espacio en memoria y su ajuste idoneo
-            D3D11_INPUT_PER_VERTEX_DATA,    //InputSlotClassAt -> Se configura que tipo de dato se está asignando
-            0                               //InstanceDataRate -> Actualización de datos
+        { "POSITION",                   
+            0,                              
+            DXGI_FORMAT_R32G32B32_FLOAT,    
+            0,                              
+            D3D11_APPEND_ALIGNED_ELEMENT,   
+            D3D11_INPUT_PER_VERTEX_DATA,    
+            0                               
         },
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT /*12*/, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
     unsigned int numElements = ARRAYSIZE(layout);
-    //Erick Aaron :D
-    //Define InputLayout
+    // 
+    //Definimos el InputLayout
     std:: vector <D3D11_INPUT_ELEMENT_DESC> Layout;
 
     D3D11_INPUT_ELEMENT_DESC position;
@@ -255,8 +240,8 @@ HRESULT InitDevice()
     texcoord.InstanceDataStepRate = 0;
     Layout.push_back(texcoord);
 
-    //Erick Aaron :D
-    // Create the input layout
+    // 
+    // Creamos el input layout
     g_inputLayout.init(g_device, Layout, pVSBlob);
 
     pVSBlob->Release();
@@ -278,7 +263,7 @@ HRESULT InitDevice()
     pPSBlob->Release();
     if( FAILED( hr ) )
         return hr;
-    //Erick Aaron :D
+    // 
     // Create vertex buffer
     SimpleVertex vertices[] =
     {
@@ -325,7 +310,7 @@ HRESULT InitDevice()
     hr = g_device.CreateBuffer(&bd, &InitData, &g_pVertexBuffer);
     if (FAILED(hr))
         return hr;
-    //Erick Aaron :D
+    // 
     // Set vertex buffer
     UINT stride = sizeof( SimpleVertex );
     UINT offset = 0;
@@ -353,7 +338,7 @@ HRESULT InitDevice()
         22,20,21,
         23,20,22
     };
-    //Erick Aaron :D
+    // 
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.ByteWidth = sizeof( WORD ) * 36;
     bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -365,7 +350,7 @@ HRESULT InitDevice()
 
     // Set index buffer
     g_deviceContext.IASetIndexBuffer( g_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0 );
-    //Erick Aaron :D
+    // 
     // Set primitive topology
     g_deviceContext.IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
@@ -387,7 +372,7 @@ HRESULT InitDevice()
  
     if (FAILED(hr))
         return hr;
-    //Erick Aaron :D
+    // 
     // Create the sample state
     D3D11_SAMPLER_DESC sampDesc;
     ZeroMemory( &sampDesc, sizeof(sampDesc) );
@@ -421,7 +406,7 @@ HRESULT InitDevice()
 
     return S_OK;
 }
-//Erick Aaron :D
+// 
 void Input(float deltaTime)
 {
 
@@ -455,12 +440,14 @@ void destroy()
     g_deviceContext.destroy();
     g_samplerState.destroy();
     g_ModelTexture.destroy();
+
     if (g_Camera) g_Camera->Release();
     if (g_pCBChangesEveryFrame) g_pCBChangesEveryFrame->Release();
     if (g_pVertexBuffer) g_pVertexBuffer->Release();
     if (g_pIndexBuffer) g_pIndexBuffer->Release();
     if (g_pVertexShader) g_pVertexShader->Release();
     if (g_pPixelShader) g_pPixelShader->Release();
+
     g_depthStencil.destroy();
     g_depthStencilView.destroy();
     g_renderTargetView.destroy();
@@ -556,9 +543,6 @@ void Render()
     
     //Set inputlayout
     g_deviceContext.IASetInputLayout(g_inputLayout.m_inputLayout);
-
-    
-
 
     //
     // Render the cube

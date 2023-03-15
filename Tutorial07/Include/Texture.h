@@ -2,7 +2,7 @@
 #include "Prerequisites.h"
 #include "Commons.h"
 
-//Call to the Class is begin used in cpp (Device)
+//Llamamos a la clase que se usara en el cpp
 class
 	Device;
 
@@ -34,10 +34,11 @@ public:
 
 	//Erick Aaron :D
 public:
-	//This variable is in charge if handle a texture resource as data
+	//Seteamos las variables necesarias para el cpp
+	//Variable a cargo de manejar una recurso de textura como datos
 	ID3D11Texture2D* m_texture = nullptr;
 
-	//This variable is in charge of hanlde a texture resource as image data
+	//Variable a cargo de manejar una recurso de textura como datos de imagen.
 	ID3D11ShaderResourceView* m_textureFromImg = nullptr;
 
 };

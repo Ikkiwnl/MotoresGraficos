@@ -1,7 +1,7 @@
 #include "Prerequisites.h"
 #pragma once
 
-//Call to the Class is begin used in cpp (Device)
+//Llamamos una clase para ser usada en el cpp (Device)
 class
 	Device;
 
@@ -26,8 +26,8 @@ public:
 		destroy();
 
 public:
+	//Seteamos las variables necesarias para el cpp
 	ID3D11DepthStencilView* m_pDepthStencilView = nullptr;
 
 };
-//Erick Aaron :D
 //Erick Aaron :D

@@ -5,17 +5,16 @@
 #include <sstream>
 #include <vector>
 
-//External Lib
+//Librerias externas
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dcompiler.h>
 #include <xnamath.h>
-//Erick Aaron :D
+
 //Windows
 #include <windows.h>
-//Erick Aaron :D
 //Internal Includes
-#include "resource.h"
+#include "Resource.h"
 
 //Defines
 //Debug avanzado

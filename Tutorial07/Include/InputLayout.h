@@ -1,5 +1,6 @@
 #include "Prerequisites.h"
 #pragma once
+//Llamamos a la clase para ser usada en el cpp
 class Device;
 
 class
@@ -9,6 +10,7 @@ public:
 	~InputLayout() { SAFE_RELEASE(m_inputLayout); };
 
 	void
+		//Creamos un inputlayout que necesita un vector y un device
 		init(Device device,
 			std::vector<D3D11_INPUT_ELEMENT_DESC> Layout,
 			ID3DBlob* VertexShaderData);

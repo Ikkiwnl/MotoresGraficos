@@ -20,33 +20,32 @@ public:
 	void
 		destroy();
 
-	//Create a depth-stencil view for accessing resource data.
+	//Creamos un depth-stencil view para acceder al resource data.
 	HRESULT
 		CreateDepthStencilView(ID3D11Resource* pResource,
 			const D3D11_DEPTH_STENCIL_VIEW_DESC* pDesc,
 			ID3D11DepthStencilView** ppDepthStencilView);
 
-	//Creates a render-target view for accessing resource data.
+	//Creamos un render-target view para acceder al resource data.
 	HRESULT
 		CreateRenderTargetView(ID3D11Resource* pResource,
 			const D3D11_RENDER_TARGET_VIEW_DESC* pDesc,
 			ID3D11RenderTargetView** ppRTView);
 
-	//Create an array of 2D textures.
+	//Creamos un array de las texturas 2D.
 	HRESULT
 		CreateTexture2D(const D3D11_TEXTURE2D_DESC* pDesc,
 			const D3D11_SUBRESOURCE_DATA* pInitialData,
 			ID3D11Texture2D** ppTexture2D);
 
-	//Create a vertex-shader object from a compiled shader.
+	//Creamos un vertex-shader object desde un shader compilado.
 	HRESULT
 		CreateVertexShader(const void* pShaderBytecode,
 			unsigned int BytecodeLength,
 			ID3D11ClassLinkage* pClassLinkage,
 			ID3D11VertexShader** ppVertexShader);
 
-	//Create an input-layout object to describe the input-buffer data for the 
-	//input-assembler stage.
+	//Creamos un input-layout object que describe un input-buffer data.
 	HRESULT
 		CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs,
 			unsigned int NumElements,
@@ -54,25 +53,26 @@ public:
 			unsigned int BytecodeLength,
 			ID3D11InputLayout** ppInputLayout);
 
-	//Create a pixel shader.
+	//Creamos un pixel shader.
 	HRESULT
 		CreatePixelShader(const void* pShaderBytecode,
 			unsigned int BytecodeLength,
 			ID3D11ClassLinkage* pClassLinkage,
 			ID3D11PixelShader** ppPixelShader);
 
-	//Creates a buffer (vertex buffer, index buffer, or shader-constant buffer).
+	//Creamos un buffer (vertex buffer, index buffer, o shader-constant buffer).
 	HRESULT
 		CreateBuffer(const D3D11_BUFFER_DESC* pDesc,
 			const D3D11_SUBRESOURCE_DATA* pInitialData,
 			ID3D11Buffer** ppBuffer);
 
-	//Create a sampler-state object that encapsulates sampling information for a texture.
+	//Creamos un sampler-state object que encapsula la informacion del sampling para una textura.
 	HRESULT
 		CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc,
 			ID3D11SamplerState** ppSamplerState);
 
 public:
+	//Seteamos las variables necesarias para el cpp
 	ID3D11Device* m_device = nullptr;
 
 };

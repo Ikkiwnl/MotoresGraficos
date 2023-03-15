@@ -1,7 +1,7 @@
 #include <Windows.h>
 #pragma once
 
-//Clase a cargo de proveer un tiempo variable que será ejecutado en el gameloop
+//proveemos un tiempo que será ejecutado
 class CTime
 {
 public:
@@ -23,6 +23,7 @@ public:
 public: 
 	float m_deltaTime;
 private:
+	//Seteamos las variables necesarias para el cpp
 	LARGE_INTEGER m_currentTime;
 	LARGE_INTEGER m_lastTime;
 	LARGE_INTEGER m_timerFrequency;
