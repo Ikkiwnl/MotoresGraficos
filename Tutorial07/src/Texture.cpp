@@ -1,7 +1,6 @@
 #include "Texture.h"
 #include "Device.h"
 
-//Texture::~Texture(){
 void
 Texture::destroy() {
 	if (m_texture != nullptr) {
