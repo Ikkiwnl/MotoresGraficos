@@ -110,8 +110,7 @@ WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine,
             DispatchMessage( &msg );
         }
 
-        else
-        {
+        else{
             g_time.update();
             update();
             Render();
@@ -129,8 +128,7 @@ WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine,
 // Helper for compiling shaders with D3DX11
 //--------------------------------------------------------------------------------------
 HRESULT 
-CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut )
-{
+CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut ){
     HRESULT hr = S_OK;
 
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
@@ -144,8 +142,7 @@ CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderMod
     ID3DBlob* pErrorBlob;
     hr = D3DX11CompileFromFile( szFileName, nullptr, nullptr, szEntryPoint, szShaderModel, 
         dwShaderFlags, 0, nullptr, ppBlobOut, &pErrorBlob, nullptr );
-    if( FAILED(hr) )
-    {
+    if( FAILED(hr) ){
         if( pErrorBlob != nullptr )
             OutputDebugStringA( (char*)pErrorBlob->GetBufferPointer() );
         if( pErrorBlob ) pErrorBlob->Release();
@@ -191,8 +188,7 @@ InitDevice()
     // Compilamos el vertex shader
     ID3DBlob* pVSBlob = nullptr;
     hr = CompileShaderFromFile( "Tutorial07.fx", "VS", "vs_4_0", &pVSBlob );
-    if( FAILED( hr ) )
-    {
+    if( FAILED( hr ) ){
         MessageBox( nullptr,
                     "The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", "Error", MB_OK );
         return hr;
@@ -200,34 +196,11 @@ InitDevice()
     // 
     // Creamos el vertex shader
     hr = g_device.CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader );
-    if( FAILED( hr ) )
-    {    
+    if( FAILED( hr ) ){    
         pVSBlob->Release();
         return hr;
     }
 
-    //Define InputLayout
-    D3D11_INPUT_ELEMENT_DESC layout[] =
-    {
-        { "POSITION",                   
-            0,                              
-            DXGI_FORMAT_R32G32B32_FLOAT,    
-            0,                              
-            D3D11_APPEND_ALIGNED_ELEMENT,   
-            D3D11_INPUT_PER_VERTEX_DATA,    
-            0                               
-        },
-        { "TEXCOORD", 
-          0, 
-          DXGI_FORMAT_R32G32_FLOAT, 
-          0, 
-          D3D11_APPEND_ALIGNED_ELEMENT, 
-          D3D11_INPUT_PER_VERTEX_DATA, 
-          0 
-        },
-    };
-
-    unsigned int numElements = ARRAYSIZE(layout);
     // 
     //Definimos el InputLayout
     std:: vector <D3D11_INPUT_ELEMENT_DESC> Layout;
@@ -263,8 +236,7 @@ InitDevice()
     // Compile the pixel shader
     ID3DBlob* pPSBlob = nullptr;
     hr = CompileShaderFromFile( "Tutorial07.fx", "PS", "ps_4_0", &pPSBlob );
-    if( FAILED( hr ) )
-    {
+    if( FAILED( hr ) ){
         MessageBox( nullptr,
                     "The FX file cannot be compiled. Please run this executable from the directory that contains the FX file.", "Error", MB_OK );
         return hr;
@@ -277,8 +249,7 @@ InitDevice()
         return hr;
     // 
     // Create vertex buffer
-    SimpleVertex vertices[] =
-    {
+    SimpleVertex vertices[] ={
         { XMFLOAT3( -1.0f, 1.0f, -1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
         { XMFLOAT3( 1.0f, 1.0f, -1.0f ), XMFLOAT2( 1.0f, 0.0f ) },
         { XMFLOAT3( 1.0f, 1.0f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) },
@@ -330,8 +301,7 @@ InitDevice()
 
     // Create index buffer
     // Create vertex buffer
-    WORD indices[] =
-    {
+    WORD indices[] ={
         3,1,0,
         2,1,3,
 
