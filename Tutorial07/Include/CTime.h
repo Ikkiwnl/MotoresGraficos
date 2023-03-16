@@ -1,37 +1,37 @@
 #include <Windows.h>
 #pragma once
 
-//proveemos un tiempo que ser· ejecutado
+//proveemos un tiempo que ser√° ejecutado
 class CTime
 {
 public:
-			CTime();
-			~CTime();
+	CTime();
+	~CTime();
 
-			void
-			init();
+	void
+	init();
 
-			void
-			update();
+	void
+	update();
 
-			void
-			render();
+	void
+	render();
 
-			void
-			destroy();
+	void
+	destroy();
 
 public:
-			//tiempo usado en el tutorial 07 para las operaciones
-			float m_deltaTime;
+	//tiempo usado en el tutorial 07 para las operaciones
+	float m_deltaTime;
 
 private:
-			//A cargo de de obtener el timpo para inicializar funciones
-			LARGE_INTEGER m_currentTime;
+	//A cargo de de obtener el timpo para inicializar funciones
+	LARGE_INTEGER m_currentTime;
 
-			//Guarda el tiempo anterior
-			LARGE_INTEGER m_lastTime;
+	//Guarda el tiempo anterior
+	LARGE_INTEGER m_lastTime;
 
-			//Frecuencia del rendimiento
-			LARGE_INTEGER m_timerFrequency;
+	//Frecuencia del rendimiento
+	LARGE_INTEGER m_timerFrequency;
 
 };
