@@ -95,7 +95,11 @@ Device::CreateVertexShader(const void* pShaderBytecode,
 		exit(1);
 	}
 	else {
-		hr = m_device->CreateVertexShader(pShaderBytecode, BytecodeLength, pClassLinkage, ppVertexShader);
+		hr = m_device->CreateVertexShader(pShaderBytecode, 
+																			BytecodeLength, 
+																			pClassLinkage,
+																			ppVertexShader);
+
 		WARNING("Device::CreateVertexShader : [CREATION OF RESOURCE : OK] \n");
 	}
 
@@ -148,7 +152,11 @@ Device::CreatePixelShader(const void* pShaderBytecode,
 		exit(1);
 	}
 	else {
-		hr = m_device->CreatePixelShader(pShaderBytecode, BytecodeLength, pClassLinkage, ppPixelShader);
+		hr = m_device->CreatePixelShader(pShaderBytecode, 
+																		 BytecodeLength, 
+																		 pClassLinkage, 
+																		 ppPixelShader);
+
 		WARNING("Device::CreatePixelShader : [CREATION OF RESOURCE : OK] \n");
 	}
 

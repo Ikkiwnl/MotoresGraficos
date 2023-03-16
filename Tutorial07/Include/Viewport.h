@@ -1,27 +1,27 @@
 #pragma once
 #include "Prerequisites.h"
 
-class Window;//Erick Aaron :D
-class Viewport
-{
+class 
+Window;
+class 
+ Viewport{
 public:
-    //Permite crear el sample state que da formato a las dimesiones de las texturas
-    Viewport() = default;
-    ~Viewport() {};
+      Viewport() = default;
+      ~Viewport() {};
 
-    void
-        init(Window window);
+      //Creamos el viewport y definimos la dimension (altura, anchura)
+      void
+      init(Window window);
 
-    void
-        update();
+      void
+      update();
 
-    void
-        render();
+      void
+      render();
 
-    void
-        destroy();
+      void
+      destroy();
 
 public:
-    D3D11_VIEWPORT m_viewport;
+      D3D11_VIEWPORT      m_viewport;
 };
-//Erick Aaron :D

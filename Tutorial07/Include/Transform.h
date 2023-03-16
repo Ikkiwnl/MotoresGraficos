@@ -3,29 +3,33 @@
 #include "Commons.h"
 
 class
-	Transform {
+Transform {
 public:
-	Transform() = default;
-	~Transform() {};
+				Transform() = default;
+				~Transform() {};
 
-	//Inicializamos el transform 
-	//(variables: escala, rotación, velocidad y posición)
-	void
-		init();
 
-	void
-		update();
+				/* inicializamos las variables del transform
+				* Actualizamos los datos del tutorial07
+				* Aumentamos o reducimos la escala con with m_fSpeed * g_Time.m_fDeltaTime
+				*/
 
-	void
-		render();
+				void
+				init();
 
-	void
-		destroy();
+				void
+				update();
+
+				void
+				render();
+
+				void
+				destroy();
 
 public:
-	Vector3 m_v3Position;
-	float		m_fScaleNum;
-	float		m_fRotateNum;
-	float		m_fSpeed;
+				Vector3 m_v3Position;
+				float		m_fScaleNum;
+				float		m_fRotateNum;
+				float		m_fSpeed;
 };
 

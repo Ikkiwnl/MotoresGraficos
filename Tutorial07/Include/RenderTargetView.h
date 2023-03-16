@@ -2,30 +2,40 @@
 #include "Prerequisites.h"
 
 class
-	Device;
+Device;
 class
-	Texture;
+Texture;
 
-class RenderTargetView
-{
+class 
+RenderTargetView{
 public:
-	RenderTargetView() = default;
-	~RenderTargetView() {};
+				RenderTargetView() = default;
+				~RenderTargetView() {};
 
-	void
-		init(Device device, Texture backBuffer, DXGI_FORMAT Format);
+				/*
+				* Creamos un Render Target View para entrar a la resource data,
+				* device: Referencia para llamar al metodo CreateRenderTargetView
+				* backBuffer: Textura creada como render target
+				* Format: Le da el desc.Formt del Render target view desc
+				*/
+				void
+				init(Device device, 
+							 Texture backBuffer, 
+							 DXGI_FORMAT Format);
 
-	void
-		update();
+				void
+				update();
 
-	void
-		render();
+				void
+				render();
 
-	void
-		destroy();
+				void
+				destroy();
 
 public:
-	ID3D11RenderTargetView* m_renderTargetView = nullptr;
+			//La rendertargeview identifica los recursos del render target a los que 
+			//se puede entrar durante el render
+			ID3D11RenderTargetView* m_renderTargetView = nullptr;
 
 };
 //Erick Aaron :D

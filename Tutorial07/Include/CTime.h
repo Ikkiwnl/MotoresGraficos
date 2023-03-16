@@ -5,29 +5,33 @@
 class CTime
 {
 public:
-	CTime();
-	~CTime();
+				CTime();
+				~CTime();
 
-	void 
-	init();
+				void
+				init();
 
-	void 
-	update();
+				void
+				update();
 
-	void
-	render();
+				void
+				render();
 
-	void 
-	destroy();
+				void
+				destroy();
 
-public: 
-	float m_deltaTime;
+public:
+				//tiempo usado en el tutorial 07 para las operaciones
+				float m_deltaTime;
+
 private:
-	//Seteamos las variables necesarias para el cpp
-	LARGE_INTEGER m_currentTime;
-	LARGE_INTEGER m_lastTime;
-	LARGE_INTEGER m_timerFrequency;
-	
-};//Erick Aaron :D
+				//A cargo de de obtener el timpo para inicializar funciones
+				LARGE_INTEGER m_currentTime;
 
-//Erick Aaron :D
+				//Guarda el tiempo anterior
+				LARGE_INTEGER m_lastTime;
+
+				//Frecuencia del rendimiento
+				LARGE_INTEGER m_timerFrequency;
+
+};

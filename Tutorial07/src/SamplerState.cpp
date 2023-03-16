@@ -2,8 +2,7 @@
 #include "Device.h"
 
 void 
-SamplerState::init(Device device)
-{
+SamplerState::init(Device device) {
 	if (device.m_device == nullptr) {
 		WARNING("ERROR: SamplerState::init : [CREATION OF RESOURCE : FALSE] [CHECK FOR Device device] \n");
 		exit(1);
@@ -28,17 +27,14 @@ SamplerState::init(Device device)
 	}
 }
 	void
-		SamplerState::update()
-	{
+		SamplerState::update() {
 	}
 
 	void
-		SamplerState::render()
-	{
+		SamplerState::render() {
 	}
 	//Erick Aaron :D
 	void
-		SamplerState::destroy()
-	{
+		SamplerState::destroy() {
 		SAFE_RELEASE(m_sampler);
 	}

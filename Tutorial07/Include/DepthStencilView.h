@@ -3,31 +3,30 @@
 
 //Llamamos una clase para ser usada en el cpp (Device)
 class
-	Device;
+Device;
 
 class
-	DepthStencilView
-{
+DepthStencilView{
 public:
-	DepthStencilView() = default;
-	~DepthStencilView() { SAFE_RELEASE(m_pDepthStencilView) };
+				DepthStencilView() = default;
+				~DepthStencilView() { SAFE_RELEASE(m_pDepthStencilView) };
 
-	// Create the depth stencil view
-	void
-		init(Device device, ID3D11Resource* depthStencil, DXGI_FORMAT Format);
+				// Crea una vista de depth stencil
+				//
 
-	void
-		update();
+				void
+				init(Device device, ID3D11Resource* depthStencil, DXGI_FORMAT Format);
 
-	void
-		render();
+				void
+				update();
 
-	void
-		destroy();
+				void
+				render();
+
+				void
+				destroy();
 
 public:
-	//Seteamos las variables necesarias para el cpp
-	ID3D11DepthStencilView* m_pDepthStencilView = nullptr;
+				ID3D11DepthStencilView* m_pDepthStencilView = nullptr;
 
 };
-//Erick Aaron :D

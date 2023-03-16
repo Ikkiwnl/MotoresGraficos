@@ -17,15 +17,14 @@ Viewport::init(Window window) {
     }
 
 
-    void Viewport::update() 
-    {
+    void Viewport::update() {
 
     }
-    void Viewport::render()
-    {
-        //Erick Aaron :D
+
+    void Viewport::render() {
+        
     }
-    void Viewport::destroy()
-    {
-        //Erick Aaron :D
+
+    void Viewport::destroy() {
+       
     }

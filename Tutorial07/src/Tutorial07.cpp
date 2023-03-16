@@ -85,34 +85,31 @@ destroy();
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int
-WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow )
-{
+WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow ) {
     UNREFERENCED_PARAMETER( hPrevInstance );
     UNREFERENCED_PARAMETER( lpCmdLine );
 
     if( FAILED( g_window.init( hInstance, nCmdShow, WndProc, "Cuadro Prron") ) )
         return 0;
 
-    if( FAILED( InitDevice() ) )
-    {
+    if( FAILED( InitDevice() ) ){
         destroy();
         return 0;
     }
 
     //inicializamos el tiempo
     g_time.init();
-    //inicialisamos el transform
+    //inicializamos el transform
     g_transform.init();
 
     // Main message loop
     MSG msg = {0};
-    while( WM_QUIT != msg.message )
-    {
-        if( PeekMessage( &msg, nullptr, 0, 0, PM_REMOVE ) )
-        {
+    while( WM_QUIT != msg.message ){
+        if( PeekMessage( &msg, nullptr, 0, 0, PM_REMOVE ) ){
             TranslateMessage( &msg );
             DispatchMessage( &msg );
         }
+
         else
         {
             g_time.update();
@@ -131,7 +128,8 @@ WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine,
 //--------------------------------------------------------------------------------------
 // Helper for compiling shaders with D3DX11
 //--------------------------------------------------------------------------------------
-HRESULT CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut )
+HRESULT 
+CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut )
 {
     HRESULT hr = S_OK;
 
@@ -219,8 +217,16 @@ InitDevice()
             D3D11_INPUT_PER_VERTEX_DATA,    
             0                               
         },
-        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT /*12*/, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 
+          0, 
+          DXGI_FORMAT_R32G32_FLOAT, 
+          0, 
+          D3D11_APPEND_ALIGNED_ELEMENT, 
+          D3D11_INPUT_PER_VERTEX_DATA, 
+          0 
+        },
     };
+
     unsigned int numElements = ARRAYSIZE(layout);
     // 
     //Definimos el InputLayout
@@ -260,7 +266,7 @@ InitDevice()
     if( FAILED( hr ) )
     {
         MessageBox( nullptr,
-                    "The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", "Error", MB_OK );
+                    "The FX file cannot be compiled. Please run this executable from the directory that contains the FX file.", "Error", MB_OK );
         return hr;
     }
 
@@ -395,7 +401,10 @@ InitDevice()
     
 
     // Initialize the projection matrix
-    g_Projection = XMMatrixPerspectiveFovLH( XM_PIDIV4, g_window.m_width / (FLOAT)g_window.m_height, 0.01f, 100.0f);
+    g_Projection = XMMatrixPerspectiveFovLH( XM_PIDIV4, g_window.m_width / 
+                                           ( FLOAT)g_window.m_height,
+                                             0.01f, 
+                                             100.0f);
     
     cam.mView = XMMatrixTranspose(g_View);
     cam.mProjection = XMMatrixTranspose(g_Projection);
@@ -405,8 +414,7 @@ InitDevice()
 
 //Encargada de actualizar la logica del programa
 void
-update()
-{
+update(){
     g_transform.m_fRotateNum += 0.0002f;
 
 
@@ -433,8 +441,8 @@ update()
 //--------------------------------------------------------------------------------------
 // Clean up the objects we've created
 //--------------------------------------------------------------------------------------
-void destroy()
-{
+void 
+destroy(){
     g_deviceContext.destroy();
     g_samplerState.destroy();
     g_ModelTexture.destroy();
@@ -477,23 +485,22 @@ CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_KEYDOWN:
         //Usamos WM_KEYDOWN para poder hacer uso de las teclas para el movimiento del cubo
-        switch (wParam)
-        {
+        switch (wParam){
             //Primero ponemos sobre que eje nos va a hacer movernos el presionar
             //la tecla despues despues lo sumamos con el movementspeed y multiplicamos con 
             //nuestro deltatime que es nuestro tiemporeal
         case 'W':
             g_transform.m_v3Position.y += g_transform.m_fSpeed * g_time.m_deltaTime;
             break;
-            //Hacemos lo mismo que en el caso anterrior solo en lugar de ir en una coordenada positiva elegimos una negativa
+            
         case 'S':
             g_transform.m_v3Position.y -= g_transform.m_fSpeed * g_time.m_deltaTime;
             break;
-            //Hacemos lo mismo que en el caso anterrior solo en lugar de ir en una coordenada positiva elegimos una negativa
+            
         case 'A':
             g_transform.m_v3Position.x -= g_transform.m_fSpeed * g_time.m_deltaTime;
             break;
-            //Cambiamos de eje para el movimiento ahora sobre x 
+            
         case 'D':
             g_transform.m_v3Position.x += g_transform.m_fSpeed * g_time.m_deltaTime;
 
@@ -505,14 +512,6 @@ CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             g_transform.m_v3Position.z -= g_transform.m_fSpeed * g_time.m_deltaTime;
             break;
 
-        case 'Z':
-            g_transform.m_fScaleNum += g_transform.m_fSpeed * g_time.m_deltaTime;
-            break;
-
-        case 'X':
-            g_transform.m_fScaleNum -= g_transform.m_fSpeed * g_time.m_deltaTime;
-            break;
-            //Elegimos la tecla que nos hara el cambio de color y con ayuda el el XMFLOAT4 que es el que define el color de nuestro cubo junto con g_vMeshColor cambiamos los valores del RGBW
         case '1':
             g_vMeshColor = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
             break;
@@ -543,21 +542,24 @@ CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 // Render a frame 
 // cambia los datos mostrados en pantalla
 //--------------------------------------------------------------------------------------
-void Render()
-{
+void 
+Render(){
     // Clear the back buffer
     //
     float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; // red, green, blue, alpha
-    g_deviceContext.ClearRenderTargetView(g_renderTargetView.m_renderTargetView, ClearColor);
+    g_deviceContext.ClearRenderTargetView(g_renderTargetView.m_renderTargetView, 
+                                          ClearColor);
     //
     // Clear the depth buffer to 1.0 (max depth)
     //
-    g_deviceContext.ClearDepthStencilView  (g_depthStencilView.m_pDepthStencilView, 
+    g_deviceContext.ClearDepthStencilView (g_depthStencilView.m_pDepthStencilView, 
                                            D3D11_CLEAR_DEPTH, 
                                            1.0f,
                                            0);
 
-    g_deviceContext.OMSetRenderTargets(1, &g_renderTargetView.m_renderTargetView, g_depthStencilView.m_pDepthStencilView);
+    g_deviceContext.OMSetRenderTargets(1, &g_renderTargetView.m_renderTargetView, 
+                                        g_depthStencilView.m_pDepthStencilView);
+
     g_deviceContext.RSSetViewports(1, &g_viewport.m_viewport);
     
     //Set inputlayout

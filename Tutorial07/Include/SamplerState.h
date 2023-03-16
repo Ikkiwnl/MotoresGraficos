@@ -1,29 +1,31 @@
 #pragma once
 #include "Prerequisites.h"
 
-class Device;
+class 
+Device;
 
-class SamplerState
-{
+class 
+ SamplerState{
 public:
-    //Permite crear el sample state que da formato a las dimesiones de las texturas
-    //Erick Aaron :D
-    SamplerState() = default;
-    ~SamplerState() {};
+        //Permite crear el sample state que da formato a las dimesiones de las texturas
+        //El samplestate contiene una descripcion que puedes unir a cualquier etapa del shader
+        SamplerState() = default;
+        ~SamplerState() {};
 
-    void
+        void
         init(Device device);
 
-    void
+        void
         update();
 
-    void
+        void
         render();
 
-    void
+        void
         destroy();
 
 public:
-    ID3D11SamplerState* m_sampler = nullptr;
+        //Dirección de un puntero al sampler state object creado
+        ID3D11SamplerState* m_sampler = nullptr;
 };
 //Erick Aaron :D
