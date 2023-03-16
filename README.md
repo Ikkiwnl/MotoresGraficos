@@ -49,5 +49,6 @@ Clases abstraídas (14/03/2023)
     -SamplerState
     
     -Viewport
-
+    
+    -Transform
 
