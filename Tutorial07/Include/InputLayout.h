@@ -6,29 +6,29 @@ class Device;
 class
 InputLayout {
 public:
-			InputLayout() = default;
-			~InputLayout() { SAFE_RELEASE(m_inputLayout); };
+	InputLayout() = default;
+	~InputLayout() { SAFE_RELEASE(m_inputLayout); };
 
-				//Creamos un inputlayout que describe un input-buffer
-				//para la input-assambler
-				//Layout es un arreglo del input-assambler, cada tipo es
-				//descrito por una descripción del elemento
+	//Creamos un inputlayout que describe un input-buffer
+	//para la input-assambler
+	//Layout es un arreglo del input-assambler, cada tipo es
+	//descrito por una descripciÃ³n del elemento
 
-			void
-			init(Device device,
-						std::vector<D3D11_INPUT_ELEMENT_DESC> Layout,
-						ID3DBlob* VertexShaderData);
+	void
+	init(Device device,
+		std::vector<D3D11_INPUT_ELEMENT_DESC> Layout,
+		ID3DBlob* VertexShaderData);
 				
-			void
-			update();
+	void
+	update();
 
-			void
-			render();
+	void
+	render();
 
-			void
-			destroy();
+	void
+	destroy();
 
 public:
-			// Un input-layout contiene una definicion del vertex data
-			ID3D11InputLayout* m_inputLayout = nullptr;
+	// Un input-layout contiene una definicion del vertex data
+	ID3D11InputLayout* m_inputLayout = nullptr;
 };
