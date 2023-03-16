@@ -22,6 +22,7 @@
 #include "RenderTargetView.h"
 #include "SamplerState.h"
 #include "Viewport.h"
+#include "Transform.h"
 
 
 //--------------------------------------------------------------------------------------
@@ -39,6 +40,9 @@ SwapChain                           g_swapChain;
 RenderTargetView                    g_renderTargetView;
 SamplerState                        g_samplerState;
 Viewport                            g_viewport;
+Transform                           g_transform;
+CTime                               g_time;
+Camera                              cam;
 
 D3D_DRIVER_TYPE                     g_driverType = D3D_DRIVER_TYPE_NULL;
 D3D_FEATURE_LEVEL                   g_featureLevel = D3D_FEATURE_LEVEL_11_0;
@@ -54,26 +58,25 @@ XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor( 0.7f, 0.7f, 0.7f, 1.0f );
 
-//Almacena la vista 
-Camera cam;
 
-//Usadas para el mvimiento del cubo
-float movementSpeed = 150.0f;
-static float t = 0.0f;
-CTime g_time;
-Vector3 Position;
-float speed;
 
 //--------------------------------------------------------------------------------------
 // Forward declarations
 //--------------------------------------------------------------------------------------
-HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow );
-HRESULT InitDevice();
-LRESULT CALLBACK    WndProc( HWND, UINT, WPARAM, LPARAM );
-void Render();
-void update(float deltaTime);
+HRESULT
+InitWindow
+( HINSTANCE hInstance, int nCmdShow );
+HRESULT 
+InitDevice();
+LRESULT 
+CALLBACK WndProc( HWND, UINT, WPARAM, LPARAM );
+void 
+Render();
+void 
+update();
 //Funcion encargada de liberar los recursos utilizados en el programa
-void destroy();
+void 
+destroy();
 
 
 //Erick Aaron :D
@@ -81,7 +84,8 @@ void destroy();
 // Entry point to the program. Initializes everything and goes into a message processing 
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
-int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow )
+int
+WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow )
 {
     UNREFERENCED_PARAMETER( hPrevInstance );
     UNREFERENCED_PARAMETER( lpCmdLine );
@@ -97,6 +101,8 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
     //inicializamos el tiempo
     g_time.init();
+    //inicialisamos el transform
+    g_transform.init();
 
     // Main message loop
     MSG msg = {0};
@@ -110,7 +116,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
         else
         {
             g_time.update();
-            update(g_time.m_deltaTime);
+            update();
             Render();
         }
     }
@@ -134,7 +140,6 @@ HRESULT CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szS
     // Establecemos el indicador D3DCOMPILE_DEBUG para meter información de depuración en los shaders.
     // Establecemos esta bandera mejora la experiencia de depuración de shaders, pero todavía lo permite
     // los sombreadores se optimizarán y se ejecutarán exactamente de la forma en que se ejecutarán en la configuración de lanzamiento de este programa.
-
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 #endif
 
@@ -157,7 +162,8 @@ HRESULT CompileShaderFromFile( char* szFileName, LPCSTR szEntryPoint, LPCSTR szS
 //--------------------------------------------------------------------------------------
 // Create Direct3D device and swap chain
 //--------------------------------------------------------------------------------------
-HRESULT InitDevice()
+HRESULT 
+InitDevice()
 {
     HRESULT hr = S_OK;
 
@@ -374,18 +380,8 @@ HRESULT InitDevice()
         return hr;
     // 
     // Create the sample state
-    D3D11_SAMPLER_DESC sampDesc;
-    ZeroMemory( &sampDesc, sizeof(sampDesc) );
-    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-    sampDesc.MinLOD = 0;
-    sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    hr = g_device.CreateSamplerState( &sampDesc, &g_samplerState.m_sampler );
-    if( FAILED( hr ) )
-        return hr;
+    g_samplerState.init(g_device);
+
 
     // Initialize the world matrices
     g_World = XMMatrixIdentity();
@@ -406,22 +402,24 @@ HRESULT InitDevice()
 
     return S_OK;
 }
-// 
-void Input(float deltaTime)
-{
-
-}
 
 //Encargada de actualizar la logica del programa
-void update(float deltaTime)
+void
+update()
 {
-    Input(deltaTime);
-    // /*Update our time*/
-    speed += 0.0002f;//nos ayuda a elegir la fuerza de rotacion de nuestro cubo
+    g_transform.m_fRotateNum += 0.0002f;
 
 
     // Rotate cube around the origin
-    g_World = XMMatrixScaling(1, 1, 1) * XMMatrixRotationY(speed) * XMMatrixTranslation(Position.x, Position.y, Position.z);
+    g_World = XMMatrixScaling   (g_transform.m_fScaleNum,
+                                 g_transform.m_fScaleNum,
+                                 g_transform.m_fScaleNum) * 
+        
+              XMMatrixRotationY  (g_transform.m_fRotateNum) * 
+
+              XMMatrixTranslation(g_transform.m_v3Position.x,
+                                  g_transform.m_v3Position.y, 
+                                  g_transform.m_v3Position.z);
     CBChangesEveryFrame cb;
     cb.mWorld = XMMatrixTranspose(g_World);
     cb.vMeshColor = g_vMeshColor;
@@ -460,7 +458,8 @@ void destroy()
 //--------------------------------------------------------------------------------------
 // Called every time the application receives a message
 //--------------------------------------------------------------------------------------
-LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT 
+CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT ps;
     HDC hdc;
@@ -484,19 +483,34 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             //la tecla despues despues lo sumamos con el movementspeed y multiplicamos con 
             //nuestro deltatime que es nuestro tiemporeal
         case 'W':
-            Position.y += movementSpeed * g_time.m_deltaTime;
+            g_transform.m_v3Position.y += g_transform.m_fSpeed * g_time.m_deltaTime;
             break;
             //Hacemos lo mismo que en el caso anterrior solo en lugar de ir en una coordenada positiva elegimos una negativa
         case 'S':
-            Position.y -= movementSpeed * g_time.m_deltaTime;
+            g_transform.m_v3Position.y -= g_transform.m_fSpeed * g_time.m_deltaTime;
             break;
             //Hacemos lo mismo que en el caso anterrior solo en lugar de ir en una coordenada positiva elegimos una negativa
         case 'A':
-            Position.x -= movementSpeed * g_time.m_deltaTime;
+            g_transform.m_v3Position.x -= g_transform.m_fSpeed * g_time.m_deltaTime;
             break;
             //Cambiamos de eje para el movimiento ahora sobre x 
         case 'D':
-            Position.x += movementSpeed * g_time.m_deltaTime;
+            g_transform.m_v3Position.x += g_transform.m_fSpeed * g_time.m_deltaTime;
+
+        case 'Q':
+            g_transform.m_v3Position.z += g_transform.m_fSpeed * g_time.m_deltaTime;
+            break;
+
+        case 'E':
+            g_transform.m_v3Position.z -= g_transform.m_fSpeed * g_time.m_deltaTime;
+            break;
+
+        case 'Z':
+            g_transform.m_fScaleNum += g_transform.m_fSpeed * g_time.m_deltaTime;
+            break;
+
+        case 'X':
+            g_transform.m_fScaleNum -= g_transform.m_fSpeed * g_time.m_deltaTime;
             break;
             //Elegimos la tecla que nos hara el cambio de color y con ayuda el el XMFLOAT4 que es el que define el color de nuestro cubo junto con g_vMeshColor cambiamos los valores del RGBW
         case '1':
@@ -526,7 +540,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 //--------------------------------------------------------------------------------------
-// Render a frame
+// Render a frame 
+// cambia los datos mostrados en pantalla
 //--------------------------------------------------------------------------------------
 void Render()
 {
@@ -537,7 +552,11 @@ void Render()
     //
     // Clear the depth buffer to 1.0 (max depth)
     //
-    g_deviceContext.ClearDepthStencilView(g_depthStencilView.m_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+    g_deviceContext.ClearDepthStencilView  (g_depthStencilView.m_pDepthStencilView, 
+                                           D3D11_CLEAR_DEPTH, 
+                                           1.0f,
+                                           0);
+
     g_deviceContext.OMSetRenderTargets(1, &g_renderTargetView.m_renderTargetView, g_depthStencilView.m_pDepthStencilView);
     g_deviceContext.RSSetViewports(1, &g_viewport.m_viewport);
     
