@@ -5,15 +5,15 @@ class
 	Window
 {
 public:
-				Window();
-				~Window();
-				/* Para crear y mostrar la ventana
-				* hInstance: Identifica una instancia o modulo
-				* nCmdShow:  nCmdShow parametro se usa para minimizar y maximizar la ventana.
-				* wndproc:  es un puntero a una función definida por la aplicación denominada 
-				* procedimiento de ventana o proceso de ventana. 
-				* windowName:	string que identifica la clase window.
-				*/
+			Window();
+			~Window();
+			/* Para crear y mostrar la ventana
+			* hInstance: Identifica una instancia o modulo
+			* nCmdShow:  nCmdShow parametro se usa para minimizar y maximizar la ventana.
+			* wndproc:  es un puntero a una función definida por la aplicación denominada 
+			* procedimiento de ventana o proceso de ventana. 
+			* windowName:	string que identifica la clase window.
+			*/
 
 			HRESULT
 			init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc, LPCSTR windowName);

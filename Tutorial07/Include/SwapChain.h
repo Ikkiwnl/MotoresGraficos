@@ -17,43 +17,43 @@ class
 class SwapChain
 {
 public:
-				SwapChain() = default;
-				~SwapChain() {};
+			SwapChain() = default;
+			~SwapChain() {};
 
-				/* Creamos el Direct3D device, device Context y le da contextualizacion al backbuffer
-					* Swap chains controla el back buffer de la rotacion y forma la base de la animacion grafica.
-					* window: para obtener la altura, anchura y el m_hWnd
-					* device: para tener acceso a m_device
-					* deviceContext: para tener acceso a m_deviceContext
-					* backBuffer: para tener acceso a m_texture
-					*/
+			/* Creamos el Direct3D device, device Context y le da contextualizacion al backbuffer
+			* Swap chains controla el back buffer de la rotacion y forma la base de la animacion grafica.
+			* window: para obtener la altura, anchura y el m_hWnd
+			* device: para tener acceso a m_device
+			* deviceContext: para tener acceso a m_deviceContext
+			* backBuffer: para tener acceso a m_texture
+			*/
 
-				void
-				init(Device& device,
+			void
+			init(Device& device,
 						DeviceContext& deviceContext,
 						Texture& backBuffer,
 						Window window); 
 
-				void
-				update();
+			void
+			update();
 
-				void
-				render();
+			void
+			render();
 
-				void
-				destroy();
+			void
+			destroy();
 
-				//Present, es lo que mostramos en pantalla
-				void
-				present();
+			//Present, es lo que mostramos en pantalla
+			void
+			present();
 
 
 private:
-				//Seteamos las variables necesarias para el cpp
-				D3D_DRIVER_TYPE m_driverType		= D3D_DRIVER_TYPE_NULL;
+			//Seteamos las variables necesarias para el cpp
+			D3D_DRIVER_TYPE m_driverType		= D3D_DRIVER_TYPE_NULL;
 
-				D3D_FEATURE_LEVEL m_featureLevel	= D3D_FEATURE_LEVEL_11_0;
+			D3D_FEATURE_LEVEL m_featureLevel	= D3D_FEATURE_LEVEL_11_0;
 
-				IDXGISwapChain* m_swapChain			= nullptr;
+			IDXGISwapChain* m_swapChain			= nullptr;
 
 };
