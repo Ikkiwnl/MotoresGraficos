@@ -11,7 +11,8 @@ public:
 	DepthStencilView() = default;
 	~DepthStencilView() { SAFE_RELEASE(m_pDepthStencilView) };
 
-	// Crea una vista de depth stencil
+	// Crea un recurso de depth stencil para poder diferenciar en lo que se encuentra 
+	//y lo que no
 	
 
 	void

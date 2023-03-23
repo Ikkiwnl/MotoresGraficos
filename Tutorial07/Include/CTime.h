@@ -2,8 +2,8 @@
 #pragma once
 
 //proveemos un tiempo que será ejecutado
-class CTime
-{
+class 
+CTime{
 public:
 	CTime();
 	~CTime();
@@ -21,7 +21,7 @@ public:
 	destroy();
 
 public:
-	//tiempo usado en el tutorial 07 para las operaciones
+	//variable que controla el tiempo en todo el proyecto
 	float m_deltaTime;
 
 private:
