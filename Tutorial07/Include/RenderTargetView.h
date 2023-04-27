@@ -1,10 +1,16 @@
 #pragma once
 #include "Prerequisites.h"
+//This is forward declaration from the (Device) class
+class
+	Device;
+//This is forward declaration from the (Texture) class
+class
+	Texture;
 
 class
-Device;
-class
-Texture;
+	DeviceContext;
+
+class DepthStencilView;
 
 class 
 RenderTargetView{
@@ -27,7 +33,7 @@ public:
 	update();
 
 	void
-	render();
+	render(DeviceContext& deviceContext, DepthStencilView& depthStencilView);
 
 	void
 	destroy();
@@ -36,6 +42,6 @@ public:
 	//La rendertargeview identifica los recursos del render target a los que 
 	//se puede entrar durante el render
 	ID3D11RenderTargetView* m_renderTargetView = nullptr;
+	float m_cleanColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f };
 
 };
-//Erick Aaron :D

@@ -4,6 +4,9 @@
 class 
 Device;
 
+class
+DeviceContext;
+
 class 
  SamplerState{
 public:
@@ -19,7 +22,7 @@ public:
       update();
 
       void
-      render();
+      render(DeviceContext& deviceContext);
 
       void
       destroy();
@@ -28,4 +31,3 @@ public:
       //Dirección de un puntero al sampler state object creado
       ID3D11SamplerState* m_sampler = nullptr;
 };
-//Erick Aaron :D

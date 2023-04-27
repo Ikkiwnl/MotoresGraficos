@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <string>
 
 //Librerias externas
 #include <d3d11.h>
@@ -20,10 +21,10 @@
 //Debug avanzado
 #define WINDOWS
 #define WARNING( s )						            \
-{											                      \
-   std::wostringstream os_;					        \
-   os_ << s;								                \
-   OutputDebugStringW( os_.str().c_str() ); \
+{											               \
+   std::wostringstream os_;					      \
+   os_ << s;								            \
+   OutputDebugStringW( os_.str().c_str() );     \
 }
 
 //MACRO for safe release of resources

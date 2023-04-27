@@ -3,8 +3,12 @@
 
 class 
 Window;
+
+class
+ DeviceContext;
+
 class 
- Viewport{
+Viewport{
 public:
       Viewport() = default;
       ~Viewport() {};
@@ -17,11 +21,11 @@ public:
       update();
 
       void
-      render();
+      render(DeviceContext& deviceContext);
 
       void
       destroy();
 
 public:
-      D3D11_VIEWPORT      m_viewport;
+      D3D11_VIEWPORT m_viewport;
 };

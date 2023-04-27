@@ -7,11 +7,14 @@ class
 Device;
 
 class
+DeviceContext;
+
+class
 Texture{
 
 public:
-	Texture() = default;
-	~Texture() {};
+Texture() = default;
+~Texture() {};
 
 	/*
 	* Inicializamos la textura
@@ -39,7 +42,7 @@ public:
 	update();
 
 	void
-	render();
+	render(DeviceContext& deviceContext);
 
 	void
 	destroy();

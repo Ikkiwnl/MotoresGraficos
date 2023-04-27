@@ -27,9 +27,11 @@ public:
 	destroy();
 
 public:
-	Vector3 m_v3Position;
+	Vector3 	m_v3Position;
 	float		m_fScaleNum;
+	Vector3		m_v3Scale;
 	float		m_fRotateNum;
+	Vector3		m_v3Rotate;
 	float		m_fSpeed;
 };
 

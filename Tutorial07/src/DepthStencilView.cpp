@@ -1,10 +1,11 @@
 #include "DepthStencilView.h"
 #include "Device.h"
+#include "DeviceContext.h"
 
 void
 DepthStencilView::init(Device device,
-	ID3D11Resource* depthStencil,
-	DXGI_FORMAT Format) {
+												ID3D11Resource* depthStencil,
+												DXGI_FORMAT Format) {
 	if (device.m_device == nullptr) {
 		WARNING("ERROR: DepthStencilView::init : [CREATION OF RESOURCE : FALSE] [CHECK FOR Device device] \n");
 		exit(1);
@@ -30,7 +31,11 @@ DepthStencilView::update() {
 }
 
 void
-DepthStencilView::render() {
+DepthStencilView::render(DeviceContext& deviceContext) {
+	deviceContext.ClearDepthStencilView(m_pDepthStencilView,
+		D3D11_CLEAR_DEPTH,
+		1.0f,
+		0);
 }
 
 void

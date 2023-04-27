@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "Device.h"
+#include "DeviceContext.h"
 
 void
 Texture::destroy() {
@@ -80,4 +81,13 @@ Texture::init(Device device,
 		exit(1);
 	}
 
+}
+
+void
+Texture::update() {
+}
+
+void
+Texture::render(DeviceContext& deviceContext) {
+	deviceContext.PSSetShaderResources(0, 1, &m_textureFromImg);
 }

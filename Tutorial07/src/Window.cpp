@@ -30,7 +30,7 @@ HRESULT Window::init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc, LPCSTR 
     if (!RegisterClassEx(&wcex))
         return E_FAIL;
 
-    RECT rc = { 0, 0, 640, 480 };
+    RECT rc = { 0, 0, 1500, 840 };
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
     m_hWnd = CreateWindow("TutorialWindowClass",
@@ -55,4 +55,16 @@ HRESULT Window::init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc, LPCSTR 
     m_height = m_rect.bottom - m_rect.top;
 
     return S_OK;
+}
+
+void
+Window::update() {
+}
+
+void
+Window::render() {
+}
+
+void
+Window::destroy() {
 }

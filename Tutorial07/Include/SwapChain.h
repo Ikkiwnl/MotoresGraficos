@@ -1,58 +1,74 @@
 #pragma once
 #include "Prerequisites.h"
 
-//Llamamos a la clase para ser usada en el cpp
+//This is forward declaration from the (Device) class
 class
-Device;
-//Llamamos a la clase para ser usada en el cpp
-class
-DeviceContext;
-//Llamamos a la clase para ser usada en el cpp
-class
-Window;
-//Llamamos a la clase para ser usada en el cpp
-class
-Texture;
+	Device;
 
-class SwapChain{
+//This is forward declaration from the (DeviceContext) class
+class
+	DeviceContext;
+
+//This is forward declaration from the (Window) class
+class
+	Window;
+
+//This is forward declaration from the (Texture) class
+class
+	Texture;
+
+class SwapChain {
+
 public:
 	SwapChain() = default;
 	~SwapChain() {};
 
-	/* Creamos el Direct3D device, device Context y le da contextualizacion al backbuffer
-	* Swap chains controla el back buffer de la rotacion y forma la base de la animacion grafica.
-	* window: para obtener la altura, anchura y el m_hWnd
-	* device: para tener acceso a m_device
-	* deviceContext: para tener acceso a m_deviceContext
-	* backBuffer: para tener acceso a m_texture
+	/* Create Direct3D device, device Context and gives contextualization to backbuffer
+	* Swap chains control the back buffer rotation, forming the basis of graphics animation.
+	*
+	* window: can't be null, to get width, height and m_hWnd
+	*
+	* device: to have reference/access a  m_device
+	*
+	* deviceContext: to have reference/access a  m_deviceContext
+	*
+	* backBuffer: to have reference/access a  m_texture
 	*/
+	void
+		init(Device& device,
+			DeviceContext& deviceContext,
+			Texture& backBuffer,
+			Window window);
 
 	void
-	init(Device& device,
-		DeviceContext& deviceContext,
-		Texture& backBuffer,
-		Window window); 
+		update();
 
 	void
-	update();
+		render();
 
+	/*
+	* This function releases the pointer m_renderTargetView and sets it equal to NULL.
+	*/
 	void
-	render();
+		destroy();
 
+	/*
+	* This is a method in charge of presenting the information on the screen
+	*/
 	void
-	destroy();
-
-	//Present, es lo que mostramos en pantalla
-	void
-	present();
+		present();
 
 
-private:
-	//Seteamos las variables necesarias para el cpp
-	D3D_DRIVER_TYPE m_driverType		= D3D_DRIVER_TYPE_NULL;
+public:
+	//The D3D_DRIVER_TYPE, which represents the driver type to create.
+	D3D_DRIVER_TYPE m_driverType = D3D_DRIVER_TYPE_NULL;
 
-	D3D_FEATURE_LEVEL m_featureLevel	= D3D_FEATURE_LEVEL_11_0;
+	//Returns a pointer to a D3D_FEATURE_LEVEL, which represents the first element 
+	//in an array of feature levels supported by the device.
+	D3D_FEATURE_LEVEL m_featureLevel = D3D_FEATURE_LEVEL_11_0;
 
-	IDXGISwapChain* m_swapChain			= nullptr;
+	//Returns the address of a pointer to the IDXGISwapChain object that represents 
+	//the swap chain used for rendering.
+	IDXGISwapChain* m_swapChain = nullptr;
 
 };

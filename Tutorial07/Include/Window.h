@@ -27,7 +27,7 @@ public:
 	void
 	destroy();
 
-	//Erick Aaron :D
+	
 public:
 	//El parametro hwnd es el identificador de window devuelto por CreateWindowEx.
 	HWND m_hWnd = nullptr;

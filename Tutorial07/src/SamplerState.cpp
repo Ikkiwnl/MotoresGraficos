@@ -1,5 +1,6 @@
 #include "SamplerState.h"
 #include "Device.h"
+#include "DeviceContext.h"
 
 void 
 SamplerState::init(Device device) {
@@ -7,7 +8,7 @@ SamplerState::init(Device device) {
 		WARNING("ERROR: SamplerState::init : [CREATION OF RESOURCE : FALSE] [CHECK FOR Device device] \n");
 		exit(1);
 	}
-	//Erick Aaron :D
+
 	HRESULT hr = S_OK;
 	D3D11_SAMPLER_DESC sampDesc;
 	memset(&sampDesc, 0, sizeof(sampDesc));
@@ -31,9 +32,10 @@ SamplerState::init(Device device) {
 	}
 
 	void
-		SamplerState::render() {
+		SamplerState::render(DeviceContext& deviceContext) {
+		deviceContext.PSSetSamplers(0, 1, &m_sampler);
 	}
-	//Erick Aaron :D
+
 	void
 		SamplerState::destroy() {
 		SAFE_RELEASE(m_sampler);
